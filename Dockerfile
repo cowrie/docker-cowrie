@@ -1,5 +1,6 @@
 FROM debian
 MAINTAINER Michel Oosterhof <michel@oosterhof.net>
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y \
     -o APT::Install-Suggests=false \
     git \
@@ -24,9 +25,7 @@ RUN . venv/bin/activate; pip install -r ~cowrie/cowrie-git/requirements.txt
 RUN cp ~cowrie/cowrie-git/cowrie.cfg.dist ~cowrie/cowrie-git/cowrie.cfg
 
 CMD XARGS="-n" /cowrie/cowrie-git/start.sh /cowrie/venv
-# XARGS="-nodaemon" start.sh
 
 VOLUME /cowrie/cowrie-git/var
-#ENTRYPOINT ["cowrie"]
 EXPOSE 2222
 EXPOSE 2223
