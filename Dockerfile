@@ -15,17 +15,17 @@ RUN apt-get update && apt-get install -y \
 #    libpython-dev
 RUN groupadd cowrie
 RUN useradd -d /cowrie -m -g cowrie cowrie
-
 USER cowrie
-WORKDIR /cowrie
 
-RUN virtualenv venv
-RUN git clone http://github.com/micheloosterhof/cowrie ~/cowrie-git
-RUN . venv/bin/activate; pip install -r ~cowrie/cowrie-git/requirements.txt
-RUN cp ~cowrie/cowrie-git/cowrie.cfg.dist ~cowrie/cowrie-git/cowrie.cfg
+RUN git clone -b develop http://github.com/micheloosterhof/cowrie /cowrie/cowrie-git
+WORKDIR /cowrie/cowrie-git
+RUN virtualenv cowrie-env
+RUN . cowrie-env/bin/activate; pip install -r ~cowrie/cowrie-git/requirements.txt
+RUN cp ~cowrie/cowrie-git/etc/cowrie.cfg.dist ~cowrie/cowrie-git/etc/cowrie.cfg
 
-CMD XARGS="-n" /cowrie/cowrie-git/start.sh /cowrie/venv
+CMD /cowrie/cowrie-git/bin/cowrie start -n
 
 VOLUME /cowrie/cowrie-git/var
+VOLUME /cowrie/cowrie-git/etc
 EXPOSE 2222
 EXPOSE 2223

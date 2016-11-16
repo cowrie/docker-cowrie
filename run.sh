@@ -1,1 +1,1 @@
-docker run -p 2222:2222 cowrie
+docker run -d -p 2222:2222 -p 2223:2223 cowrie
