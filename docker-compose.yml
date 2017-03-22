@@ -9,3 +9,8 @@ services:
     ports:
       - "2222:2222"
       - "2223:2223"
+    volumes:
+      # Map a local cowrie config dir into the container.
+      # - "./etc:/cowrie/cowrie-git/etc"
+      # Make cowrie logs persistent through container recreates.
+      - "./var:/cowrie/cowrie-git/var"
