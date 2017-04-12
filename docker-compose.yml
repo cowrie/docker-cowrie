@@ -1,0 +1,16 @@
+version: "2.0"
+
+services:
+  cowrie:
+    restart: always
+    # Bug Michel to create a Docker Hub account and build an image from the repo.
+    # build: .
+    image: cafuego/cowrie:dev
+    ports:
+      - "2222:2222"
+      - "2223:2223"
+    volumes:
+      # Map a local cowrie config dir into the container.
+      # - "./etc:/cowrie/cowrie-git/etc"
+      # Make cowrie logs persistent through container recreates.
+      - "./var:/cowrie/cowrie-git/var"
