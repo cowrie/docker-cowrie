@@ -22,9 +22,9 @@ RUN apt-get update && \
     groupadd cowrie && \
     useradd -d /cowrie -m -g cowrie cowrie && \
     #
-    # Build a cowrie environment from github develop HEAD.
+    # Build a cowrie environment from github master HEAD.
     su - cowrie -c "\
-      git clone -b develop http://github.com/micheloosterhof/cowrie /cowrie/cowrie-git && \
+      git clone http://github.com/micheloosterhof/cowrie /cowrie/cowrie-git && \
       cd /cowrie/cowrie-git && \
         virtualenv cowrie-env && \
         . cowrie-env/bin/activate && \

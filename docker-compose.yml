@@ -5,7 +5,7 @@ services:
     restart: always
     # Bug Michel to create a Docker Hub account and build an image from the repo.
     # build: .
-    image: cafuego/cowrie:dev
+    image: micheloosterhof/cowrie:dev
     ports:
       - "2222:2222"
       - "2223:2223"
