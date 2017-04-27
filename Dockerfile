@@ -30,7 +30,7 @@ RUN apt-get update && \
         . cowrie-env/bin/activate && \
         pip install --upgrade cffi && \
         pip install -r ~cowrie/cowrie-git/requirements.txt && \
-        cp ~cowrie/cowrie-git/etc/cowrie.cfg.dist ~cowrie/cowrie-git/etc/cowrie.cfg" && \
+        cp ~cowrie/cowrie-git/cowrie.cfg.dist ~cowrie/cowrie-git/etc/cowrie.cfg" && \
     #
     # Remove all the build tools to keep the image small.
     apt-get remove -y --purge \
