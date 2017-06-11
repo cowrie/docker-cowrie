@@ -20,10 +20,10 @@ RUN apt-get update && \
     #
     # Add a user and group run run under.
     groupadd cowrie && \
-    useradd -d /cowrie -m -g cowrie cowrie && \
-    #
+    useradd -d /cowrie -m -g cowrie cowrie
+
     # Build a cowrie environment from github master HEAD.
-    su - cowrie -c "\
+RUN su - cowrie -c "\
       git clone http://github.com/micheloosterhof/cowrie /cowrie/cowrie-git && \
       cd /cowrie/cowrie-git && \
         virtualenv cowrie-env && \
@@ -53,6 +53,6 @@ RUN apt-get update && \
 
 USER cowrie
 WORKDIR /cowrie/cowrie-git
-CMD /cowrie/cowrie-git/bin/cowrie start -n
+CMD exec /cowrie/cowrie-git/bin/cowrie start -n
 EXPOSE 2222 2223
 VOLUME [ "/cowrie/cowrie-git/etc", "/cowrie/cowrie-git/var" ]
