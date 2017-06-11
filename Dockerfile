@@ -29,9 +29,8 @@ RUN su - cowrie -c "\
         virtualenv cowrie-env && \
         . cowrie-env/bin/activate && \
         pip install --upgrade cffi && \
-        pip install -r ~cowrie/cowrie-git/requirements.txt && \
-        cp ~cowrie/cowrie-git/cowrie.cfg.dist ~cowrie/cowrie-git/etc/cowrie.cfg" && \
-    #
+        pip install -r ~cowrie/cowrie-git/requirements.txt" && \
+
     # Remove all the build tools to keep the image small.
     apt-get remove -y --purge \
       git \
