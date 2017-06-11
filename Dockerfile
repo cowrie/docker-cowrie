@@ -3,6 +3,9 @@ MAINTAINER Michel Oosterhof <michel@oosterhof.net>
 
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN groupadd cowrie && \
+    useradd -d /cowrie -m -g cowrie cowrie
+
 RUN apt-get update && \
     apt-get install -y -o APT::Install-Suggests=false \
       python-pip \
@@ -16,10 +19,7 @@ RUN apt-get update && \
       git \
       python-virtualenv \
       python-setuptools && \
-    #
-    # Add a user and group run run under.
-    groupadd cowrie && \
-    useradd -d /cowrie -m -g cowrie cowrie
+    rm -rf /var/lib/apt/lists/*
 
     # Build a cowrie environment from github master HEAD.
 RUN su - cowrie -c "\
@@ -51,6 +51,6 @@ RUN su - cowrie -c "\
 
 USER cowrie
 WORKDIR /cowrie/cowrie-git
-CMD exec /cowrie/cowrie-git/bin/cowrie start -n
+CMD [ "/cowrie/cowrie-git/bin/cowrie", "start", "-n" ]
 EXPOSE 2222 2223
 VOLUME [ "/cowrie/cowrie-git/etc", "/cowrie/cowrie-git/var" ]
