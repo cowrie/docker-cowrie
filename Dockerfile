@@ -4,7 +4,6 @@ MAINTAINER Michel Oosterhof <michel@oosterhof.net>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
     apt-get install -y -o APT::Install-Suggests=false \
       python-pip \
       libmpfr-dev \
