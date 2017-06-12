@@ -5,6 +5,12 @@ Honeypot Docker effort. It contains Dockerfiles that you can use
 to build [Cowrie](https://github.com/micheloosterhof/cowrie)
 Docker images.
 
+# What is Cowrie
+
+Cowrie is a medium interaction SSH and Telnet honeypot designed to
+log brute force attacks and the shell interaction performed by the
+attacker.
+
 # docker-compose volumes
 
 If you want to map local directories into the docker image, you need
@@ -14,9 +20,3 @@ will start failing in a never-ending loop.
 ```
 mkdir -p var/log/cowrie var/run
 ```
-
-# What is Cowrie 
-
-Cowrie is a medium interaction SSH and Telnet honeypot designed to
-log brute force attacks and the shell interaction performed by the
-attacker.
