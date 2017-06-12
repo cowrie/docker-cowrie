@@ -1,8 +1,9 @@
 FROM debian:jessie-slim
 MAINTAINER Michel Oosterhof <michel@oosterhof.net>
 
-RUN groupadd cowrie && \
-    useradd -d /cowrie -m -g cowrie cowrie
+# Fix uid/gid to 1000 for shared volumes
+RUN groupadd -r -g 1000 cowrie && \
+    useradd -r -g 1000 -d /cowrie -m -g cowrie cowrie
 
 # Set up Debian prereqs
 RUN export DEBIAN_FRONTEND=noninteractive; \
