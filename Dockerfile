@@ -8,7 +8,9 @@ RUN groupadd -r -g 1000 cowrie && \
 # Set up Debian prereqs
 RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get update && \
-    apt-get install -y -o APT::Install-Suggests=false \
+    apt-get install -y \
+        -o APT::Install-Suggests=false \
+        -o APT::Install-Recommends=false \
       python-pip \
       libmpfr-dev \
       libssl-dev \
@@ -18,6 +20,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       libpython-dev \
       python2.7-minimal \
       git \
+      virtualenv \
       python-virtualenv \
       python-setuptools
 
