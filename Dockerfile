@@ -13,7 +13,6 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Recommends=false \
       python-pip \
       libssl-dev \
-      libmpc-dev \
       libffi-dev \
       build-essential \
       libpython-dev \
