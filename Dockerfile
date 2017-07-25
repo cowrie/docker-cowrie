@@ -12,7 +12,6 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Suggests=false \
         -o APT::Install-Recommends=false \
       python-pip \
-      libmpfr-dev \
       libssl-dev \
       libmpc-dev \
       libffi-dev \
