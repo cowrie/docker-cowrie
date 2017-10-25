@@ -30,6 +30,8 @@ RUN su - cowrie -c "\
         virtualenv cowrie-env && \
         . cowrie-env/bin/activate && \
         pip install --upgrade cffi && \
+        pip install --upgrade pip && \
+        pip install --upgrade setuptools && \
         pip install -r ~cowrie/cowrie-git/requirements.txt" && \
 
     # Remove all the build tools to keep the image small.
