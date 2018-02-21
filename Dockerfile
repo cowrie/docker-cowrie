@@ -28,11 +28,11 @@ RUN su - cowrie -c "\
       cd /cowrie/cowrie-git && \
         virtualenv cowrie-env && \
         . cowrie-env/bin/activate && \
-        pip install --upgrade cffi && \
         pip install --upgrade pip && \
-        pip install --upgrade setuptools && \
-        pip install -r ~cowrie/cowrie-git/requirements.txt" && \
-
+        pip --no-cache-dir install --upgrade cffi && \
+        pip --no-cache-dir install --upgrade setuptools && \
+        pip --no-cache-dir install -r ~cowrie/cowrie-git/requirements.txt" && \
+    \
     # Remove all the build tools to keep the image small.
     export DEBIAN_FRONTEND=noninteractive && \
     apt-get remove -y --purge \
