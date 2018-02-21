@@ -45,7 +45,8 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       libffi-dev \
       python2.7
 
-COPY --from=builder --chown=cowrie:cowrie /cowrie/cowrie-git /cowrie/cowrie-git
+COPY --from=builder /cowrie/cowrie-git /cowrie/cowrie-git
+RUN chown -R cowrie:cowrie /cowrie
 
 USER cowrie
 WORKDIR /cowrie/cowrie-git
