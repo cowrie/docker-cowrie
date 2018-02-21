@@ -3,9 +3,7 @@ version: "2.0"
 services:
   cowrie:
     restart: always
-    # Bug Michel to create a Docker Hub account and build an image from the repo.
-    # build: .
-    image: micheloosterhof/cowrie:dev
+    image: cowrie/cowrie:latest
     ports:
       - "2222:2222"
       - "2223:2223"
