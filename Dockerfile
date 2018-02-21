@@ -1,9 +1,7 @@
-FROM debian:jessie-slim
+FROM debian:jessie-slim as builder
 MAINTAINER Michel Oosterhof <michel@oosterhof.net>
-
-# Fix uid/gid to 1000 for shared volumes
 RUN groupadd -r -g 1000 cowrie && \
-    useradd -r -g 1000 -d /cowrie -m -g cowrie cowrie
+    useradd -r -u 1000 -d /cowrie -m -g cowrie cowrie
 
 # Set up Debian prereqs
 RUN export DEBIAN_FRONTEND=noninteractive; \
@@ -16,7 +14,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       libffi-dev \
       build-essential \
       libpython-dev \
-      python2.7-minimal \
+      python2.7 \
       git \
       virtualenv \
       python-virtualenv \
@@ -29,28 +27,25 @@ RUN su - cowrie -c "\
         virtualenv cowrie-env && \
         . cowrie-env/bin/activate && \
         pip install --upgrade pip && \
-        pip --no-cache-dir install --upgrade cffi && \
-        pip --no-cache-dir install --upgrade setuptools && \
-        pip --no-cache-dir install -r ~cowrie/cowrie-git/requirements.txt" && \
-    \
-    # Remove all the build tools to keep the image small.
-    export DEBIAN_FRONTEND=noninteractive && \
-    apt-get remove -y --purge \
-      git \
-      python-pip \
-      python-setuptools \
-      libmpfr-dev \
+        pip install --upgrade cffi && \
+        pip install --upgrade setuptools && \
+        pip install --upgrade -r /cowrie/cowrie-git/requirements.txt"
+
+FROM debian:jessie-slim
+MAINTAINER Michel Oosterhof <michel@oosterhof.net>
+RUN groupadd -r -g 1000 cowrie && \
+    useradd -r -u 1000 -d /cowrie -m -g cowrie cowrie
+
+RUN export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update && \
+    apt-get install -y \
+        -o APT::Install-Suggests=false \
+        -o APT::Install-Recommends=false \
       libssl-dev \
-      libmpc-dev \
       libffi-dev \
-      build-essential \
-      libpython-dev \
-      python3.4* && \
-    # Remove any auto-installed depends for the build and any temp files and package lists.
-    apt-get autoremove -y && \
-    dpkg -l | awk '/^rc/ {print $2}' | xargs dpkg --purge && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+      python2.7
+
+COPY --from=builder --chown=cowrie:cowrie /cowrie/cowrie-git /cowrie/cowrie-git
 
 USER cowrie
 WORKDIR /cowrie/cowrie-git
