@@ -52,4 +52,4 @@ USER cowrie
 WORKDIR /cowrie/cowrie-git
 CMD [ "/cowrie/cowrie-git/bin/cowrie", "start", "-n" ]
 EXPOSE 2222 2223
-VOLUME [ "/cowrie/cowrie-git/etc", "/cowrie/cowrie-git/var" ]
+VOLUME [ "/cowrie/cowrie-git/etc" ]
