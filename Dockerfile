@@ -40,9 +40,9 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get install -y \
         -o APT::Install-Suggests=false \
         -o APT::Install-Recommends=false \
-      libssl-dev \
-      libffi-dev \
-      python2.7
+      libssl1.1 \
+      libffi6 \
+      python
 
 COPY --from=builder /cowrie/cowrie-git /cowrie/cowrie-git
 RUN chown -R cowrie:cowrie /cowrie
