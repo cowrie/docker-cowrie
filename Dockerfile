@@ -1,4 +1,4 @@
-FROM debian:jessie-slim as builder
+FROM debian:stretch-slim as builder
 MAINTAINER Michel Oosterhof <michel@oosterhof.net>
 RUN groupadd -r -g 1000 cowrie && \
     useradd -r -u 1000 -d /cowrie -m -g cowrie cowrie
@@ -13,12 +13,11 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       libssl-dev \
       libffi-dev \
       build-essential \
-      libpython-dev \
-      python2.7 \
+      python-dev \
+      python \
       git \
       virtualenv \
-      python-virtualenv \
-      python-setuptools
+      python-virtualenv
 
     # Build a cowrie environment from github master HEAD.
 RUN su - cowrie -c "\
@@ -31,7 +30,7 @@ RUN su - cowrie -c "\
         pip install --upgrade setuptools && \
         pip install --upgrade -r /cowrie/cowrie-git/requirements.txt"
 
-FROM debian:jessie-slim
+FROM debian:stretch-slim
 MAINTAINER Michel Oosterhof <michel@oosterhof.net>
 RUN groupadd -r -g 1000 cowrie && \
     useradd -r -u 1000 -d /cowrie -m -g cowrie cowrie
