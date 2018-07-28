@@ -9,21 +9,21 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get install -y \
         -o APT::Install-Suggests=false \
         -o APT::Install-Recommends=false \
-      python-pip \
+      python3-pip \
       libssl-dev \
       libffi-dev \
       build-essential \
-      python-dev \
-      python \
+      python3-dev \
+      python3 \
       git \
       virtualenv \
-      python-virtualenv
+      python3-virtualenv
 
-    # Build a cowrie environment from github master HEAD.
+# Build a cowrie environment from github master HEAD.
 RUN su - cowrie -c "\
       git clone http://github.com/micheloosterhof/cowrie /cowrie/cowrie-git && \
-      cd /cowrie/cowrie-git && \
-        virtualenv cowrie-env && \
+      cd /cowrie && \
+        virtualenv -p python3 cowrie-env && \
         . cowrie-env/bin/activate && \
         pip install --upgrade pip && \
         pip install --upgrade cffi && \
@@ -42,13 +42,11 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Recommends=false \
       libssl1.1 \
       libffi6 \
-      python
+      python3
 
-COPY --from=builder /cowrie/cowrie-git /cowrie/cowrie-git
-RUN chown -R cowrie:cowrie /cowrie
+COPY --chown=cowrie:cowrie --from=builder /cowrie /cowrie
 
 USER cowrie
 WORKDIR /cowrie/cowrie-git
 CMD [ "/cowrie/cowrie-git/bin/cowrie", "start", "-n" ]
 EXPOSE 2222 2223
-VOLUME [ "/cowrie/cowrie-git/etc" ]
