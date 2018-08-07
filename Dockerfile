@@ -12,9 +12,9 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       python3-pip \
       libssl-dev \
       libffi-dev \
-      build-essential \
       python3-dev \
       python3 \
+      gcc \
       git \
       virtualenv \
       python3-virtualenv
