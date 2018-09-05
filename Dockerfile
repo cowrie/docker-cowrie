@@ -32,6 +32,9 @@ RUN su - cowrie -c "\
 
 FROM debian:stretch-slim
 MAINTAINER Michel Oosterhof <michel@oosterhof.net>
+
+ENV DOCKER "yes"
+
 RUN groupadd -r -g 1000 cowrie && \
     useradd -r -u 1000 -d /cowrie -m -g cowrie cowrie
 
