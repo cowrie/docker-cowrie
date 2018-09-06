@@ -30,6 +30,7 @@ RUN su - cowrie -c "\
         pip install --upgrade cffi && \
         pip install --upgrade setuptools && \
         pip install --upgrade -r /cowrie/cowrie-git/requirements.txt"
+        pip install --upgrade -r /cowrie/cowrie-git/requirements-output.txt"
 
 FROM debian:stretch-slim
 MAINTAINER Michel Oosterhof <michel@oosterhof.net>
