@@ -18,7 +18,10 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       gcc \
       git \
       virtualenv \
-      python3-virtualenv
+      build-essential \
+      python3-virtualenv \
+      libsnappy-dev \
+      default-libmysqlclient-dev
 
 # Build a cowrie environment from github master HEAD.
 RUN su - cowrie -c "\
@@ -29,7 +32,7 @@ RUN su - cowrie -c "\
         pip install --upgrade pip && \
         pip install --upgrade cffi && \
         pip install --upgrade setuptools && \
-        pip install --upgrade -r /cowrie/cowrie-git/requirements.txt"
+        pip install --upgrade -r /cowrie/cowrie-git/requirements.txt && \
         pip install --upgrade -r /cowrie/cowrie-git/requirements-output.txt"
 
 FROM debian:stretch-slim
