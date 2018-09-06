@@ -1,5 +1,6 @@
 FROM debian:stretch-slim as builder
-MAINTAINER Michel Oosterhof <michel@oosterhof.net>
+LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
+
 RUN groupadd -r -g 1000 cowrie && \
     useradd -r -u 1000 -d /cowrie -m -g cowrie cowrie
 
