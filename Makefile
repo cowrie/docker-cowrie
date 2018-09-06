@@ -4,6 +4,8 @@ CONTAINERNAME= cowrie
 all: Dockerfile
 	docker build -t ${IMAGENAME} .
 
+run: start
+
 start:
 	docker run -p 2222:2222/tcp -p 2223:2223/tcp -d --name ${CONTAINERNAME} ${IMAGENAME}
 

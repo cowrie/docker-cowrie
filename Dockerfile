@@ -51,6 +51,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 
 COPY --chown=cowrie:cowrie --from=builder /cowrie /cowrie
 
+ENV DOCKER=yes
 USER cowrie
 WORKDIR /cowrie/cowrie-git
 CMD [ "/cowrie/cowrie-git/bin/cowrie", "start", "-n" ]
