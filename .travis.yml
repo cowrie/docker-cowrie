@@ -5,7 +5,9 @@ os: linux
 services:
   - docker
 script:
-  - docker build -t cowrie
+  - docker build -t cowrie .
+after_script:
+  - docker images
 notifications:
   email: false
   slack:
