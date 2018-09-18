@@ -25,7 +25,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 
 # Build a cowrie environment from github master HEAD.
 RUN su - cowrie -c "\
-      git clone --separate-git-dir=/tmp/cowrie.git http://github.com/micheloosterhof/cowrie /cowrie/cowrie-git && \
+      git clone --separate-git-dir=/tmp/cowrie.git http://github.com/cowrie/cowrie /cowrie/cowrie-git && \
       cd /cowrie && \
         virtualenv -p python3 cowrie-env && \
         . cowrie-env/bin/activate && \
