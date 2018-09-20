@@ -1,7 +1,9 @@
 IMAGENAME = cowrie
 CONTAINERNAME= cowrie
 
-all: Dockerfile
+all: build
+
+build: Dockerfile
 	docker build -t ${IMAGENAME} .
 
 run: start
