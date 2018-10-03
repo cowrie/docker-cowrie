@@ -29,11 +29,11 @@ RUN su - cowrie -c "\
       cd /cowrie && \
         python3 -m venv cowrie-env && \
         . cowrie-env/bin/activate && \
-        pip install --upgrade pip && \
-        pip install --upgrade cffi && \
-        pip install --upgrade setuptools && \
-        pip install --upgrade -r /cowrie/cowrie-git/requirements.txt && \
-        pip install --upgrade -r /cowrie/cowrie-git/requirements-output.txt"
+        pip install --no-cache-dir --upgrade pip && \
+        pip install --no-cache-dir --upgrade cffi && \
+        pip install --no-cache-dir --upgrade setuptools && \
+        pip install --no-cache-dir --upgrade -r /cowrie/cowrie-git/requirements.txt && \
+        pip install --no-cache-dir --upgrade -r /cowrie/cowrie-git/requirements-output.txt"
 
 FROM debian:stretch-slim
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
