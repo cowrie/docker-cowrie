@@ -14,10 +14,10 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       libssl-dev \
       libffi-dev \
       python3-dev \
+      python3-venv \
       python3 \
       gcc \
       git \
-      virtualenv \
       build-essential \
       python3-virtualenv \
       libsnappy-dev \
@@ -27,7 +27,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 RUN su - cowrie -c "\
       git clone --separate-git-dir=/tmp/cowrie.git http://github.com/micheloosterhof/cowrie /cowrie/cowrie-git && \
       cd /cowrie && \
-        virtualenv -p python3 cowrie-env && \
+        python3 -m venv cowrie-env && \
         . cowrie-env/bin/activate && \
         pip install --upgrade pip && \
         pip install --upgrade cffi && \
@@ -54,5 +54,6 @@ COPY --chown=cowrie:cowrie --from=builder /cowrie /cowrie
 ENV DOCKER=yes
 USER cowrie
 WORKDIR /cowrie/cowrie-git
-CMD [ "/cowrie/cowrie-git/bin/cowrie", "start", "-n" ]
+ENTRYPOINT [ "/cowrie/cowrie-git/bin/cowrie" ]
+CMD [ "start", "-n" ]
 EXPOSE 2222 2223
