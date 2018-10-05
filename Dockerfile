@@ -1,8 +1,12 @@
 FROM debian:stretch-slim as builder
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
-RUN groupadd -r -g 1000 cowrie && \
-    useradd -r -u 1000 -d /cowrie -m -g cowrie cowrie
+ENV COWRIE_GROUP=cowrie \
+    COWRIE_USER=cowrie \
+    COWRIE_HOME=/cowrie
+
+RUN groupadd -r -g 1000 ${COWRIE_GROUP} && \
+    useradd -r -u 1000 -d ${COWRIE_HOME} -m -g ${COWRIE_GROUP} ${COWRIE_USER}
 
 # Set up Debian prereqs
 RUN export DEBIAN_FRONTEND=noninteractive; \
@@ -24,21 +28,26 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       default-libmysqlclient-dev
 
 # Build a cowrie environment from github master HEAD.
-RUN su - cowrie -c "\
-      git clone --separate-git-dir=/tmp/cowrie.git http://github.com/cowrie/cowrie /cowrie/cowrie-git && \
-      cd /cowrie && \
+RUN su - ${COWRIE_USER} -c "\
+      git clone --separate-git-dir=/tmp/cowrie.git http://github.com/cowrie/cowrie ${COWRIE_HOME}/cowrie-git && \
+      cd ${COWRIE_HOME} && \
         python3 -m venv cowrie-env && \
         . cowrie-env/bin/activate && \
         pip install --no-cache-dir --upgrade pip && \
         pip install --no-cache-dir --upgrade cffi && \
         pip install --no-cache-dir --upgrade setuptools && \
-        pip install --no-cache-dir --upgrade -r /cowrie/cowrie-git/requirements.txt && \
-        pip install --no-cache-dir --upgrade -r /cowrie/cowrie-git/requirements-output.txt"
+        pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
+        pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt"
 
 FROM debian:stretch-slim
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
-RUN groupadd -r -g 1000 cowrie && \
-    useradd -r -u 1000 -d /cowrie -m -g cowrie cowrie
+
+ENV COWRIE_GROUP=cowrie \
+    COWRIE_USER=cowrie \
+    COWRIE_HOME=/cowrie
+
+RUN groupadd -r -g 1000 ${COWRIE_GROUP} && \
+    useradd -r -u 1000 -d ${COWRIE_HOME} -m -g ${COWRIE_GROUP} ${COWRIE_USER}
 
 RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get update && \
@@ -47,13 +56,17 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Recommends=false \
       libssl1.1 \
       libffi6 \
-      python3
+      python3 && \
+    ln -s /usr/bin/python3 /usr/local/bin/python
 
-COPY --chown=cowrie:cowrie --from=builder /cowrie /cowrie
+COPY --from=builder ${COWRIE_HOME} ${COWRIE_HOME}
+RUN chown -R ${COWRIE_USER}:${COWRIE_GROUP} ${COWRIE_HOME}
 
+ENV PATH=${COWRIE_HOME}/cowrie-git/bin:${PATH}
 ENV DOCKER=yes
-USER cowrie
-WORKDIR /cowrie/cowrie-git
-ENTRYPOINT [ "/cowrie/cowrie-git/bin/cowrie" ]
+
+USER ${COWRIE_USER}
+WORKDIR ${COWRIE_HOME}/cowrie-git
+ENTRYPOINT [ "cowrie" ]
 CMD [ "start", "-n" ]
 EXPOSE 2222 2223
