@@ -1,3 +1,7 @@
+# This Dockerfile contains two images, `builder` and `runtime`.
+# `builder` contains all necessary code to build
+# `runtime` is stripped down.
+
 FROM debian:stretch-slim as builder
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
@@ -39,7 +43,7 @@ RUN su - ${COWRIE_USER} -c "\
         pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
         pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt"
 
-FROM debian:stretch-slim
+FROM debian:stretch-slim AS runtime
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 ENV COWRIE_GROUP=cowrie \
@@ -56,6 +60,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Recommends=false \
       libssl1.1 \
       libffi6 \
+      procps \
       python3 && \
     ln -s /usr/bin/python3 /usr/local/bin/python
 
@@ -67,6 +72,7 @@ ENV DOCKER=yes
 
 USER ${COWRIE_USER}
 WORKDIR ${COWRIE_HOME}/cowrie-git
+VOLUME [ "/cowrie/cowrie-git/var", "/cowrie/cowrie-git/etc" ]
 ENTRYPOINT [ "cowrie" ]
 CMD [ "start", "-n" ]
 EXPOSE 2222 2223
