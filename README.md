@@ -11,11 +11,14 @@ Cowrie is a medium interaction SSH and Telnet honeypot designed to
 log brute force attacks and the shell interaction performed by the
 attacker.
 
-## The Splunk Base Image: base-debian-9
-In order to minimize image size and provide a stable foundation for
-other images to build on, we elected to use `debian:stretch-slim`
-for our base image. `debian:stretch-slim` gives us the latest version
-of the Linux Debian operating system in a tiny 55 megabytes. 
+# Building
+Note that you will need to install Docker.
+
+Run the following command to build all the images:
+
+```
+$ make all
+```
 
 # Configuring Cowrie in Docker
 
@@ -28,3 +31,4 @@ Docker
 [telnet]
 enabled = yes
 ```
+
