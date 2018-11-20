@@ -1,14 +1,16 @@
-version: "2.0"
+version: '3'
+
+volumes:
+  cowrie-etc:
+  cowrie-var:
 
 services:
   cowrie:
     restart: always
-    image: cowrie/cowrie:latest
+    image: .
     ports:
       - "2222:2222"
       - "2223:2223"
     volumes:
-      # Map a local cowrie config dir into the container.
-      # - "./etc:/cowrie/cowrie-git/etc"
-      # Make cowrie logs persistent through container recreates.
-      - "./var:/cowrie/cowrie-git/var"
+      - cowrie-etc:/cowrie/cowrie-git/etc
+      - cowrie-var:/cowrie/cowrie-git/var
