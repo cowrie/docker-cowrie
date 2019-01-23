@@ -32,16 +32,21 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       default-libmysqlclient-dev
 
 # Build a cowrie environment from github master HEAD.
+
+# pip assert tests no longer compatible with --no-cache-dir
+# https://stackoverflow.com/questions/54315938/why-does-pipenv-fail-to-install-a-package-inside-a-docker-container
+# --no-cache-dir should be enabled again in the future when this is fixed.
+
 RUN su - ${COWRIE_USER} -c "\
       git clone --separate-git-dir=/tmp/cowrie.git http://github.com/cowrie/cowrie ${COWRIE_HOME}/cowrie-git && \
       cd ${COWRIE_HOME} && \
         python3 -m venv cowrie-env && \
         . cowrie-env/bin/activate && \
         pip install --no-cache-dir --upgrade pip && \
-        pip install --no-cache-dir --upgrade cffi && \
-        pip install --no-cache-dir --upgrade setuptools && \
-        pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
-        pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt"
+        pip install --upgrade cffi && \
+        pip install --upgrade setuptools && \
+        pip install --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
+        pip install --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt"
 
 FROM debian:stretch-slim AS runtime
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
