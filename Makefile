@@ -1,10 +1,13 @@
+#  This makefile is for developers and is not required to run Cowrie
+
 IMAGENAME = cowrie
+TAG = devel
 CONTAINERNAME= cowrie
 
 all: build
 
 build: Dockerfile
-	docker build -t ${IMAGENAME} .
+	docker build -t ${IMAGENAME}:${TAG} .
 
 run: start
 
@@ -14,7 +17,7 @@ start: create-volumes
 		   -v cowrie-etc:/cowrie/cowrie-git/etc \
 		   -v cowrie-var:/cowrie/cowrie-git/var \
 		   -d \
-	           --name ${CONTAINERNAME} ${IMAGENAME}
+	           --name ${CONTAINERNAME} ${IMAGENAME}:${TAG}
 
 stop:
 	docker stop ${CONTAINERNAME}
@@ -23,7 +26,7 @@ rm: stop
 	docker rm ${CONTAINERNAME}
 
 clean:
-	docker rmi ${IMAGENAME}
+	docker rmi ${IMAGENAME}:${TAG}
 
 shell:
 	docker exec -it ${CONTAINERNAME} bash
@@ -37,7 +40,7 @@ ps:
 status: ps
 
 ip:
-	docker inspect ${CONTAINERNAME} | jq '..|.IPAddress?' | grep -v null | sort -u
+	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${CONTAINERNAME}
 
 create-volumes:
 	docker volume create cowrie-var
