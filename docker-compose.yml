@@ -7,7 +7,9 @@ volumes:
 services:
   cowrie:
     restart: always
-    image: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "2222:2222"
       - "2223:2223"
