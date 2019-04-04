@@ -29,7 +29,8 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       build-essential \
       python3-virtualenv \
       libsnappy-dev \
-      default-libmysqlclient-dev
+      default-libmysqlclient-dev && \
+    rm -rf /var/lib/apt/lists/*
 
 # Build a cowrie environment from github master HEAD.
 
@@ -64,6 +65,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       libffi6 \
       procps \
       python3 && \
+    rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/local/bin/python
 
 COPY --from=builder ${COWRIE_HOME} ${COWRIE_HOME}
