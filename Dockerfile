@@ -2,7 +2,7 @@
 # `builder` contains all necessary code to build
 # `runtime` is stripped down.
 
-FROM debian:stretch-slim as builder
+FROM debian:buster-slim as builder
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 ENV COWRIE_GROUP=cowrie \
@@ -51,7 +51,7 @@ RUN git clone --separate-git-dir=/tmp/cowrie.git http://github.com/cowrie/cowrie
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt
 
-FROM debian:stretch-slim AS runtime
+FROM debian:buster-slim AS runtime
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 ENV COWRIE_GROUP=cowrie \
