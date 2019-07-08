@@ -5,6 +5,20 @@ Honeypot Docker effort. It contains Dockerfiles that you can use
 to build [Cowrie](https://github.com/micheloosterhof/cowrie) Docker
 images.
 
+## Quick Trial
+
+To run Cowrie in Docker locally with creating your own image, run
+
+```
+docker run -p 2222:2222/tcp cowrie/cowrie
+```
+
+Then run an SSH client to port 2222 to test it:
+
+```
+ssh -p 2222 root@localhost`
+```
+
 ## What is Cowrie
 
 Cowrie is a medium interaction SSH and Telnet honeypot designed to
