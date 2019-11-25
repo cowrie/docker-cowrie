@@ -1,92 +1,62 @@
-# This Dockerfile contains two images, `builder` and `runtime`.
+# This Dockerfile contains three images, `base-image`, `builder` and `runtime`
+# `base-image` contains all necessary prereqs and variables for build and runtime
 # `builder` contains all necessary code to build
-# `runtime` is stripped down.
+# `runtime` is stripped down
 
-FROM debian:buster-slim as builder
+FROM alpine:latest AS base-image
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
-ENV COWRIE_GROUP=cowrie \
+ENV COWRIE_VERSION=v2.0.2 \
+    COWRIE_GROUP=cowrie \
     COWRIE_USER=cowrie \
-    COWRIE_HOME=/cowrie
+    COWRIE_HOME=/cowrie \
+    PATH=/cowrie/cowrie-git/bin:$PATH \
+    STDOUT=yes
 
-# Set locale to UTF-8, otherwise upstream libraries have bytes/string conversion issues
-ENV LC_ALL=en_US.UTF-8 \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8
+RUN addgroup -S -g 1000 $COWRIE_GROUP \
+    && adduser -S -u 1000 -h $COWRIE_HOME -G $COWRIE_GROUP $COWRIE_USER \
+    && apk add --no-cache \
+        python3 \
+        procps \
+        bash
 
-RUN groupadd -r -g 1000 ${COWRIE_GROUP} && \
-    useradd -r -u 1000 -d ${COWRIE_HOME} -m -g ${COWRIE_GROUP} ${COWRIE_USER}
+FROM base-image AS builder
 
-# Set up Debian prereqs
-RUN export DEBIAN_FRONTEND=noninteractive; \
-    apt-get update && \
-    apt-get install -y \
-        -o APT::Install-Suggests=false \
-        -o APT::Install-Recommends=false \
-      python3-pip \
-      libssl-dev \
-      libffi-dev \
-      python3-dev \
-      python3-venv \
-      python3 \
-      gcc \
-      git \
-      build-essential \
-      python3-virtualenv \
-      libsnappy-dev \
-      default-libmysqlclient-dev && \
-    rm -rf /var/lib/apt/lists/*
+# Set up prereqs
+RUN apk --no-cache add \
+    mariadb-connector-c-dev \
+    libffi-dev \
+    openssl-dev \
+    snappy-dev \
+    musl-dev \
+    python3-dev \
+    gcc \
+    g++
 
-# Build a cowrie environment from github master HEAD.
+USER $COWRIE_USER
 
-USER ${COWRIE_USER}
+RUN mkdir -v $COWRIE_HOME/cowrie-git \
+    && wget -O- https://github.com/cowrie/cowrie/archive/$COWRIE_VERSION.tar.gz \
+        | (tar -xz --strip-components=1 -C $COWRIE_HOME/cowrie-git) \
+    && python3 -m venv $COWRIE_HOME/cowrie-env \
+    && . $COWRIE_HOME/cowrie-env/bin/activate \
+    && pip install --no-cache-dir --upgrade \
+        -r $COWRIE_HOME/cowrie-git/requirements.txt \
+        -r $COWRIE_HOME/cowrie-git/requirements-output.txt \
+        cffi \
+        setuptools \
+    && rm -rf $COWRIE_HOME/.cache
 
-RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowrie ${COWRIE_HOME}/cowrie-git && \
-    cd ${COWRIE_HOME} && \
-      python3 -m venv cowrie-env && \
-      . cowrie-env/bin/activate && \
-      pip install --no-cache-dir --upgrade pip && \
-      pip install --no-cache-dir --upgrade cffi && \
-      pip install --no-cache-dir --upgrade setuptools && \
-      pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
-      pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt
+FROM base-image
 
-FROM debian:buster-slim AS runtime
-LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
+COPY --from=builder $COWRIE_HOME $COWRIE_HOME
 
-ENV COWRIE_GROUP=cowrie \
-    COWRIE_USER=cowrie \
-    COWRIE_HOME=/cowrie
+USER $COWRIE_USER
 
-RUN groupadd -r -g 1000 ${COWRIE_GROUP} && \
-    useradd -r -u 1000 -d ${COWRIE_HOME} -m -g ${COWRIE_GROUP} ${COWRIE_USER}
+WORKDIR $COWRIE_HOME/cowrie-git
 
-RUN export DEBIAN_FRONTEND=noninteractive; \
-    apt-get update && \
-    apt-get install -y \
-        -o APT::Install-Suggests=false \
-        -o APT::Install-Recommends=false \
-      libssl1.1 \
-      libffi6 \
-      procps \
-      python3 && \
-    rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/bin/python3 /usr/local/bin/python
-
-COPY --from=builder ${COWRIE_HOME} ${COWRIE_HOME}
-RUN chown -R ${COWRIE_USER}:${COWRIE_GROUP} ${COWRIE_HOME}
-
-ENV PATH=${COWRIE_HOME}/cowrie-git/bin:${PATH}
-ENV STDOUT=yes
-
-USER ${COWRIE_USER}
-WORKDIR ${COWRIE_HOME}/cowrie-git
-
-# preserve .dist file when etc/ volume is mounted
-RUN cp ${COWRIE_HOME}/cowrie-git/etc/cowrie.cfg.dist ${COWRIE_HOME}/cowrie-git
 VOLUME [ "/cowrie/cowrie-git/var", "/cowrie/cowrie-git/etc" ]
-RUN mv ${COWRIE_HOME}/cowrie-git/cowrie.cfg.dist ${COWRIE_HOME}/cowrie-git/etc
 
-ENTRYPOINT [ "cowrie" ]
-CMD [ "start", "-n" ]
+CMD [ "cowrie", "start", "-n" ]
+
 EXPOSE 2222 2223
