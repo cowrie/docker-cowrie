@@ -41,7 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 
 USER ${COWRIE_USER}
 
-RUN git clone --separate-git-dir=/tmp/cowrie.git http://github.com/cowrie/cowrie ${COWRIE_HOME}/cowrie-git && \
+RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowrie ${COWRIE_HOME}/cowrie-git && \
     cd ${COWRIE_HOME} && \
       python3 -m venv cowrie-env && \
       . cowrie-env/bin/activate && \
