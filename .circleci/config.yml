@@ -1,0 +1,7 @@
+version: 2
+jobs:
+  build:
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker build -t cowrie/cowrie:$CIRCLE_BRANCH .
