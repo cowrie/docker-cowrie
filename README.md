@@ -16,7 +16,7 @@ docker run -p 2222:2222/tcp cowrie/cowrie
 Then run an SSH client to port 2222 to test it:
 
 ```
-ssh -p 2222 root@localhost`
+ssh -p 2222 root@localhost
 ```
 
 ## What is Cowrie
