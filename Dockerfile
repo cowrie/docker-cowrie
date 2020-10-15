@@ -5,6 +5,8 @@
 FROM debian:buster-slim as builder
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
+WORKDIR /
+
 ENV COWRIE_GROUP=cowrie \
     COWRIE_USER=cowrie \
     COWRIE_HOME=/cowrie
