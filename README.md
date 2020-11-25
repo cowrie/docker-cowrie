@@ -36,13 +36,20 @@ $ make all
 
 # Configuring Cowrie in Docker
 
-Cowrie in Docker is set up to use an 'etc' volume to store configuration
-data.  Create ```cowrie.cfg``` inside the etc volume with the
-following contents to enable Telnet in your Cowrie Honeypot in
-Docker
+Cowrie in Docker can be configured using environment variables. The
+variable should have the section name in capitals, followed by the
+stanza in capitals. An example is below to enable telnet support
+
+```
+COWRIE_TELNET_ENABLED=yes
+```
+
+Alternatively, Cowrie in Docker can use an 'etc' volume to store
+configuration data.  Create ```cowrie.cfg``` inside the etc volume
+with the following contents to enable telnet in your Cowrie Honeypot
+in Docker
 
 ```
 [telnet]
 enabled = yes
 ```
-
