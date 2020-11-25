@@ -41,7 +41,7 @@ variable should have the section name in capitals, followed by the
 stanza in capitals. An example is below to enable telnet support
 
 ```
-TELNET_ENABLED=yes
+COWRIE_TELNET_ENABLED=yes
 ```
 
 Alternatively, Cowrie in Docker can use an 'etc' volume to store
