@@ -71,7 +71,8 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       libssl1.1 \
       libffi6 \
       procps \
-      python3 && \
+      python3 \
+      python3-distutils && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/local/bin/python
 
