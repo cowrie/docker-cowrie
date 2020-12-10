@@ -27,6 +27,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Recommends=false \
       python3-pip \
       libssl-dev \
+      ca-certificates \
       libffi-dev \
       python3-dev \
       python3-venv \
@@ -69,6 +70,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Suggests=false \
         -o APT::Install-Recommends=false \
       libssl1.1 \
+      ca-certificates \
       libffi6 \
       procps \
       python3 && \
