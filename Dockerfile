@@ -2,7 +2,8 @@
 # `builder` contains all necessary code to build
 # `runtime` is stripped down.
 
-FROM debian:buster-slim as builder
+ARG ARCH=
+FROM ${ARCH}debian:buster-slim as builder
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 WORKDIR /
