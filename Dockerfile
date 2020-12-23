@@ -2,7 +2,8 @@
 # `builder` contains all necessary code to build
 # `runtime` is stripped down.
 
-FROM debian:buster-slim as builder
+ARG ARCH=
+FROM ${ARCH}debian:buster-slim as builder
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 WORKDIR /
@@ -54,7 +55,7 @@ RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowri
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt
 
-FROM debian:buster-slim AS runtime
+FROM ${ARCH}debian:buster-slim AS runtime
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 ENV COWRIE_GROUP=cowrie \
