@@ -1,8 +1,11 @@
 # This Dockerfile contains two images, `builder` and `runtime`.
+
 # `builder` contains all necessary code to build
 # `runtime` is stripped down.
 
-FROM debian:buster-slim as builder
+ARG DEBIAN_VERSION=buster-slim
+
+FROM debian:$DEBIAN_VERSION as builder
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 WORKDIR /
@@ -12,7 +15,7 @@ ENV COWRIE_GROUP=cowrie \
     COWRIE_HOME=/cowrie
 
 # Set locale to UTF-8, otherwise upstream libraries have bytes/string conversion issues
-ENV LC_ALL=en_US.UTF-8 \
+ENV LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8
 
@@ -35,7 +38,6 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       gcc \
       git \
       build-essential \
-      python3-virtualenv \
       libsnappy-dev \
       default-libmysqlclient-dev && \
     rm -rf /var/lib/apt/lists/*
@@ -54,7 +56,7 @@ RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowri
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt
 
-FROM debian:buster-slim AS runtime
+FROM debian:$DEBIAN_VERSION AS runtime
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 ENV COWRIE_GROUP=cowrie \
