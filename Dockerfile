@@ -51,6 +51,7 @@ RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowri
       python3 -m venv cowrie-env && \
       . cowrie-env/bin/activate && \
       pip install --no-cache-dir --upgrade pip && \
+      pip install --no-cache-dir --upgrade wheel && \
       pip install --no-cache-dir --upgrade cffi && \
       pip install --no-cache-dir --upgrade setuptools && \
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
