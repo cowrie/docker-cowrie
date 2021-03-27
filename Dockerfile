@@ -76,6 +76,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       ca-certificates \
       libffi6 \
       procps \
+      default-libmysqlclient-dev \
       python3 && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/local/bin/python
