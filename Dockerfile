@@ -8,6 +8,9 @@ LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 WORKDIR /
 
+# This is a temporary workaround, see https://github.com/cowrie/docker-cowrie/issues/26
+ENV CRYPTOGRAPHY_DONT_BUILD_RUST=1
+
 ENV COWRIE_GROUP=cowrie \
     COWRIE_USER=cowrie \
     COWRIE_HOME=/cowrie
