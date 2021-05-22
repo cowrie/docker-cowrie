@@ -27,14 +27,14 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Suggests=false \
         -o APT::Install-Recommends=false \
       python3-pip \
-      libssl-dev \
       ca-certificates \
       libffi-dev \
+      libssl-dev \
       python3-dev \
       python3-venv \
       python3 \
       rustc \
-      gcc \
+      cargo \
       git \
       build-essential \
       python3-virtualenv \
