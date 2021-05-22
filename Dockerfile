@@ -33,6 +33,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       python3-dev \
       python3-venv \
       python3 \
+      rustc \
       gcc \
       git \
       build-essential \
