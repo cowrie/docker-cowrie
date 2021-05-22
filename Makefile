@@ -22,6 +22,10 @@ build: Dockerfile
 .PHONY: run
 run: start
 
+.PHONY: lint
+lint:
+	hadolint Dockerfile
+
 .PHONY: push
 push: build-prod
 	@echo "Pushing image to GitHub Docker Registry...\n"
