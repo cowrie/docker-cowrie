@@ -41,8 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       git \
       build-essential \
       python3-virtualenv \
-      libsnappy-dev \
-      default-libmysqlclient-dev && \
+      libsnappy-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Build a cowrie environment from github master HEAD.
@@ -79,7 +78,6 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
       libffi6 \
       procps \
       python3 \
-      default-libmysqlclient-dev \
       python3-distutils && \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/local/bin/python
