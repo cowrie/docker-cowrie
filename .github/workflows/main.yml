@@ -24,6 +24,7 @@ jobs:
 
       - name: Hadolint Action
         uses: brpaz/hadolint-action@v1.1.0
+        continue-on-error: true
 
       # Runs a single command using the runners shell
       # - name: Run a one-line script
