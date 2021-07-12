@@ -82,8 +82,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
     rm -rf /var/lib/apt/lists/* && \
     ln -s /usr/bin/python3 /usr/local/bin/python
 
-COPY --from=builder ${COWRIE_HOME} ${COWRIE_HOME}
-RUN chown -R ${COWRIE_USER}:${COWRIE_GROUP} ${COWRIE_HOME}
+COPY --from=builder --chown=${COWRIE_USER}:${COWRIE_GROUP} ${COWRIE_HOME} ${COWRIE_HOME}
 
 ENV PATH=${COWRIE_HOME}/cowrie-git/bin:${PATH}
 ENV COWRIE_STDOUT=yes
