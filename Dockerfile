@@ -3,7 +3,7 @@
 # `runtime` is stripped down.
 
 ARG ARCH=
-FROM ${ARCH}debian:buster-slim as builder
+FROM ${ARCH}debian:bullseye-slim as builder
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 WORKDIR /
@@ -52,13 +52,12 @@ RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowri
     cd ${COWRIE_HOME} && \
       python3 -m venv cowrie-env && \
       . cowrie-env/bin/activate && \
-      pip install --no-cache-dir --upgrade pip && \
+      pip install --no-cache-dir --upgrade pip wheel setuptools && \
       pip install --no-cache-dir --upgrade cffi && \
-      pip install --no-cache-dir --upgrade setuptools && \
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt
 
-FROM ${ARCH}debian:buster-slim AS runtime
+FROM ${ARCH}debian:bullseye-slim AS runtime
 LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 ENV COWRIE_GROUP=cowrie \
@@ -75,7 +74,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
         -o APT::Install-Recommends=false \
       libssl1.1 \
       ca-certificates \
-      libffi6 \
+      libffi7 \
       procps \
       python3 \
       python3-distutils && \
