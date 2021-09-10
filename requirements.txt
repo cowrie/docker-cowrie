@@ -1,0 +1,8 @@
+click==7.1.2
+colorama==0.4.4
+dockerlint==0.3.1
+junit-xml==1.9
+pip==21.2.4
+setuptools==57.4.0
+six==1.15.0
+wheel==0.37.0
