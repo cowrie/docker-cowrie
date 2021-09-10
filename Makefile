@@ -17,15 +17,15 @@ CONTAINERNAME := cowrie
 all: build
 
 .PHONY: build
-build: Dockerfile ## Build Docker image
-	docker build -t ${IMAGENAME}:${TAG} .
+build: context/Dockerfile ## Build Docker image
+	docker build -t ${IMAGENAME}:${TAG} context
 
 .PHONY: run
 run: start ## Run Docker container
 
 .PHONY: lint
 lint: ## Lint Docker Container
-	hadolint Dockerfile
+	hadolint context/Dockerfile
 
 .PHONY: push
 push: build ## Push Docker image to Docker Hub
