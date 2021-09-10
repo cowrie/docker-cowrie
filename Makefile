@@ -1,4 +1,4 @@
-#  This makefile is for developers and is not required to run Cowrie
+# This Makefile is for developers and is not required to run Cowrie
 
 # The binary to build (just the basename).
 MODULE := cowrie
@@ -13,12 +13,14 @@ IMAGENAME := cowrie/cowrie
 TAG := latest
 CONTAINERNAME := cowrie
 
+BUILD_DATE = $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
+
 .PHONY: all
 all: build
 
 .PHONY: build
 build: context/Dockerfile ## Build Docker image
-	docker build -t ${IMAGENAME}:${TAG} context
+	docker build -t ${IMAGENAME}:${TAG} --build-arg BUILD_DATE=${BUILD_DATE} context
 
 .PHONY: run
 run: start ## Run Docker container

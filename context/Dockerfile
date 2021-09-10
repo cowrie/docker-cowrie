@@ -3,8 +3,8 @@
 # `runtime` is stripped down.
 
 ARG ARCH=
+ARG BUILD_DATE
 FROM ${ARCH}debian:bullseye-slim as builder
-LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
 
 WORKDIR /
 
@@ -58,7 +58,21 @@ RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowri
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt
 
 FROM ${ARCH}debian:bullseye-slim AS runtime
-LABEL maintainer="Michel Oosterhof <michel@oosterhof.net>"
+
+LABEL org.opencontainers.image.created="${BUILD_DATE}"
+LABEL org.opencontainers.image.authors="Michel Oosterhof <michel@oosterhof.net>"
+LABEL org.opencontainers.image.url="https://cowrie.org/"
+LABEL org.opencontainers.image.documentation="https://cowrie.readthedocs.io"
+LABEL org.opencontainers.image.source="https://github.com/cowrie/docker-cowrie"
+LABEL org.opencontainers.image.version="version"
+LABEL org.opencontainers.image.revision="Source control revision identifier for the packaged software."
+LABEL org.opencontainers.image.vendor="Cowrie"
+LABEL org.opencontainers.image.licenses="BSD-3-Clause"
+LABEL org.opencontainers.image.ref.name="latest"
+LABEL org.opencontainers.image.title="Cowrie SSH/Telnet Honeypot"
+LABEL org.opencontainers.image.description="Cowrie SSH/Telnet Honeypot"
+LABEL org.opencontainers.image.base.digest="7beb0248fd81"
+LABEL org.opencontainers.image.base.name="docker.io/library/debian:bullseye-slim"
 
 ENV COWRIE_GROUP=cowrie \
     COWRIE_USER=cowrie \
