@@ -48,8 +48,9 @@ RUN export DEBIAN_FRONTEND=noninteractive; \
 
 USER ${COWRIE_USER}
 
+WORKDIR ${COWRIE_HOME}
+
 RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowrie ${COWRIE_HOME}/cowrie-git && \
-    cd ${COWRIE_HOME} && \
       python3 -m venv cowrie-env && \
       . cowrie-env/bin/activate && \
       pip install --no-cache-dir --upgrade pip wheel setuptools && \
