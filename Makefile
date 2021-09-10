@@ -39,6 +39,7 @@ start: create-volumes ## Start Docker container
 		   -v cowrie-etc:/cowrie/cowrie-git/etc \
 		   -v cowrie-var:/cowrie/cowrie-git/var \
 		   -d \
+		   --cap-drop=ALL \
 	           --name ${CONTAINERNAME} ${IMAGENAME}:${TAG}
 
 .PHONY: stop
