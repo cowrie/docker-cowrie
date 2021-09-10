@@ -8,8 +8,8 @@ services:
   cowrie:
     restart: always
     build:
-      context: .
-      dockerfile: context/Dockerfile
+      context: context
+      dockerfile: Dockerfile
     ports:
       - "2222:2222"
       - "2223:2223"
