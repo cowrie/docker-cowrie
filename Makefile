@@ -42,6 +42,7 @@ start: create-volumes ## Start Docker container
 		   -v cowrie-var:/cowrie/cowrie-git/var \
 		   -d \
 		   --cap-drop=ALL \
+		   --read-only \
 	           --name ${CONTAINERNAME} ${IMAGENAME}:${TAG}
 
 .PHONY: stop
