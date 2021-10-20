@@ -56,7 +56,9 @@ RUN git clone --separate-git-dir=/tmp/cowrie.git https://github.com/cowrie/cowri
       pip install --no-cache-dir --upgrade pip wheel setuptools && \
       pip install --no-cache-dir --upgrade cffi && \
       pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements.txt && \
-      pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt
+      pip install --no-cache-dir --upgrade -r ${COWRIE_HOME}/cowrie-git/requirements-output.txt && \
+      python -m compileall ${COWRIE_HOME}
+
 
 FROM ${ARCH}debian:bullseye-slim AS runtime
 
